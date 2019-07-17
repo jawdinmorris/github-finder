@@ -4,13 +4,16 @@ import "./App.css";
 import About from "./components/pages/About.js";
 import Navbar from "./components/layout/Navbar.js";
 import Users from "./components/users/Users.js";
+import User from "./components/users/User.js";
 import Search from "./components/users/Search.js";
 import Alert from "./components/layout/Alert.js";
 import axios from "axios";
+import { async } from "q";
 
 class App extends Component {
   state = {
     users: [],
+    user: [],
     loading: false,
     alert: null
   };
@@ -25,6 +28,7 @@ class App extends Component {
     this.setState({ users: res.data.items, loading: false });
   }
 
+  //Search Github Users
   searchUsers = async text => {
     this.setState({ loading: true });
     const res = await axios.get(
@@ -35,6 +39,18 @@ class App extends Component {
     this.setState({ users: res.data.items, loading: false });
   };
 
+  //Get Single Github User
+  getUser = async username => {
+    this.setState({ loading: true });
+    const res = await axios.get(
+      `https://api.github.com/users/${username}?client_id=${
+        process.env.REACT_APP_GITHUB_CLIENT_ID
+      }&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_ID}`
+    );
+    this.setState({ user: res.data, loading: false });
+  };
+
+  //Clear Github Users
   clearUsers = () => {
     this.setState({ users: [], loading: false });
   };
@@ -43,8 +59,9 @@ class App extends Component {
     this.setState({ alert: { msg: msg, type: type } });
     setTimeout(() => this.setState({ alert: null }), 5000);
   };
+
   render() {
-    const { users, loading } = this.state;
+    const { users, loading, user } = this.state;
     return (
       <Router>
         <div className="App">
@@ -68,6 +85,18 @@ class App extends Component {
                 )}
               />
               <Route exact path="/about" component={About} />
+              <Route
+                exact
+                path="/user/:login"
+                render={props => (
+                  <User
+                    {...props}
+                    getUser={this.getUser}
+                    user={user}
+                    loading={loading}
+                  />
+                )}
+              />
             </Switch>
           </div>
         </div>
