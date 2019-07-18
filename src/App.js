@@ -13,7 +13,7 @@ import { async } from "q";
 class App extends Component {
   state = {
     users: [],
-    user: [],
+    user: {},
     repos: [],
     loading: false,
     alert: null
