@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = ({ icon, title }) => {
   return (
-    <nav className="navbar bg-primary">
+    <nav className="navbar">
       <h1>
         <Link to="/">
           <i className={icon} /> {title}
@@ -23,7 +23,7 @@ const Navbar = ({ icon, title }) => {
 };
 
 Navbar.defaultProps = {
-  title: "Github Finder",
+  title: "CA Github Tracker",
   icon: "fab fa-github"
 };
 
