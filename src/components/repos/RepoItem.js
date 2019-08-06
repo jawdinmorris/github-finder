@@ -7,6 +7,7 @@ const RepoItem = ({ repo }) => {
       <h3>
         <a href={repo.html_url}>{repo.name}</a>
       </h3>
+      <h4>{new Date(repo.updated_at).toLocaleDateString()}</h4>
     </div>
   );
 };
